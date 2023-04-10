@@ -22,58 +22,47 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
+        checkFilm(film);
+        films.put(film.getId(),film);
+        log.info("Фильм успешно добавлен: " + film);
+        return film;
+    }
+
+    @PutMapping
+    public Film update(@RequestBody Film film) throws ValidationException {
+        checkFilm(film);
+        if (films.containsKey(film.getId())) {
+            Film tmpFilm = films.get(film.getId());
+            tmpFilm.setName(film.getName());
+            tmpFilm.setDescription(film.getDescription());
+            tmpFilm.setReleaseDate(film.getReleaseDate());
+            tmpFilm.setDuration(film.getDuration());
+            films.replace(tmpFilm.getId(),tmpFilm);
+            film = tmpFilm;
+        } else {
+            films.put(film.getId(), film);
+        }
+        log.info("Фильм успешно обновлён: " + film);
+        return film;
+    }
+
+    private void checkFilm(Film film) throws ValidationException {
         if (film.getName() == null || film.getName().isBlank()) {
             log.error("Ошибка валидации: название пустое");
             throw new ValidationException();
         }
-        if (film.getDescription().length() > 200) {
-            log.error("Ошибка валидации: описание превысило лимит в 200 символов");
+        if (film.getDescription() == null || film.getDescription().isBlank() || film.getDescription().length() > 200) {
+            log.error("Ошибка валидации: описание превысило лимит в 200 символов или пустое");
             throw new ValidationException();
         }
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895,12,28)) {
-            log.error("Ошибка валидации: дата релиза ранее 28.12.1895");
+        if (film.getReleaseDate() == null
+                || film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
+            log.error("Ошибка валидации: дата релиза ранее 28.12.1895 или пустая");
             throw new ValidationException();
         }
         if (film.getDuration() <= 0) {
             log.error("Ошибка валидации: длительность фильма равна нулю или отрицательная");
             throw new ValidationException();
         }
-        films.put(film.getId(),film);
-        log.info("Фильм успешно добавлен: " + film.toString());
-        return film;
-    }
-
-    @PutMapping
-    public Film update(@RequestBody Film film) throws ValidationException {
-        if (films.containsKey(film.getId())) {
-            if (!(film.getName() == null || film.getName().isBlank())) {
-                films.get(film.getId()).setName(film.getName());
-            }
-            if (!(film.getDescription() == null || film.getDescription().isBlank())) {
-                if (film.getDescription().length() > 200) {
-                    log.error("Ошибка валидации: описание превысило лимит в 200 символов");
-                    throw new ValidationException();
-                } else {
-                    films.get(film.getId()).setDescription(film.getDescription());
-                }
-            }
-            if (!(film.getReleaseDate() == null)) {
-                if (film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
-                    log.error("Ошибка валидации: дата релиза ранее 28.12.1895");
-                    throw new ValidationException();
-                } else {
-                    films.get(film.getId()).setReleaseDate(film.getReleaseDate());
-                }
-            }
-            if (film.getDuration() <= 0) {
-                log.error("Ошибка валидации: длительность фильма равна нулю или отрицательная");
-                throw new ValidationException();
-            } else {
-                films.get(film.getId()).setDuration(film.getDuration());
-            }
-        } else {
-            films.put(film.getId(), film);
-        }
-        return film;
     }
 }
