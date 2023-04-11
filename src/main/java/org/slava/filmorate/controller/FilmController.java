@@ -1,8 +1,8 @@
-package controller;
+package org.slava.filmorate.controller;
 
-import exceptions.ValidationException;
+import org.slava.filmorate.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import model.Film;
+import org.slava.filmorate.model.Film;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 @RequestMapping("/films")
 @Slf4j
 public class FilmController {
-    private final HashMap<Integer,Film> films = new HashMap<>();
+    private final HashMap<Integer, Film> films = new HashMap<>();
 
     @GetMapping
     public Collection<Film> findAll() {

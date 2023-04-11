@@ -1,9 +1,11 @@
-package model;
+package org.slava.filmorate.model;
 
+import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class Film {
     private final int id;
     private String name;

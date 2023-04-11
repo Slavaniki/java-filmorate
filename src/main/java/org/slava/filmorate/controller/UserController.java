@@ -1,8 +1,8 @@
-package controller;
+package org.slava.filmorate.controller;
 
-import exceptions.ValidationException;
+import org.slava.filmorate.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import model.User;
+import org.slava.filmorate.model.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
