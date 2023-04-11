@@ -1,7 +1,7 @@
 package org.slava.filmorate.controller;
 
-import org.slava.filmorate.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +14,7 @@ import java.util.HashMap;
 @Slf4j
 public class UserController {
     private final HashMap<Integer,User> users = new HashMap<>();
+    private int id = 0;
 
     @GetMapping
     public Collection<User> findAll() {
@@ -23,6 +24,8 @@ public class UserController {
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
         checkUser(user);
+        id++;
+        user.setId(id);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -42,10 +45,11 @@ public class UserController {
             tmpUser.setEmail(user.getEmail());
             tmpUser.setLogin(user.getLogin());
             tmpUser.setBirthday(user.getBirthday());
+            tmpUser.setName(user.getName());
             users.replace(tmpUser.getId(), tmpUser);
             user = tmpUser;
         } else {
-            users.put(user.getId(), user);
+            throw new ValidationException();
         }
         log.info("Пользователь успешно обновлён: " + user);
         return user;

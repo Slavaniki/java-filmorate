@@ -14,6 +14,7 @@ import java.util.HashMap;
 @Slf4j
 public class FilmController {
     private final HashMap<Integer, Film> films = new HashMap<>();
+    private int id = 0;
 
     @GetMapping
     public Collection<Film> findAll() {
@@ -23,6 +24,8 @@ public class FilmController {
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
         checkFilm(film);
+        id++;
+        film.setId(id);
         films.put(film.getId(),film);
         log.info("Фильм успешно добавлен: " + film);
         return film;
@@ -40,7 +43,7 @@ public class FilmController {
             films.replace(tmpFilm.getId(),tmpFilm);
             film = tmpFilm;
         } else {
-            films.put(film.getId(), film);
+            throw new ValidationException();
         }
         log.info("Фильм успешно обновлён: " + film);
         return film;
