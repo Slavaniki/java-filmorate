@@ -35,7 +35,7 @@ class UserControllerTest {
                 .name("")
                 .birthday(LocalDate.of(1999,10,31))
                 .build();
-        assertThrows(ValidationException .class,() -> userController.create(user2));
+        assertThrows(ValidationException.class,() -> userController.create(user2));
         assertThrows(NullPointerException.class,() -> userController.create(null));
         assertEquals(user3,userController.create(user3));
     }
@@ -49,15 +49,15 @@ class UserControllerTest {
                 .name("")
                 .birthday(LocalDate.now().plusMonths(10))
                 .build();
-        assertThrows(ValidationException .class,() -> userController.update(user2));
+        assertThrows(ValidationException.class,() -> userController.update(user2));
         user2.setEmail("Skeleton");
-        assertThrows(ValidationException .class,() -> userController.update(user2));
+        assertThrows(ValidationException.class,() -> userController.update(user2));
         user2.setEmail("Skeleton@mail.ru");
-        assertThrows(ValidationException .class,() -> userController.update(user2));
+        assertThrows(ValidationException.class,() -> userController.update(user2));
         user2.setLogin("Kos tia noi");
-        assertThrows(ValidationException .class,() -> userController.update(user2));
+        assertThrows(ValidationException.class,() -> userController.update(user2));
         user2.setLogin("Kostik");
-        assertThrows(ValidationException .class,() -> userController.update(user2));
+        assertThrows(ValidationException.class,() -> userController.update(user2));
         user2.setBirthday(LocalDate.now());
         assertEquals(user2,userController.update(user2));
         assertThrows(NullPointerException.class,() -> userController.update(null));
