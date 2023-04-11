@@ -22,7 +22,6 @@ class FilmControllerTest {
     @Test
     void create() throws ValidationException {
         Film film2 = Film.builder()
-                .id(2)
                 .name("Гарри Поттер")
                 .description("варпиашмпршариироамигимргаргиагригриурсисаруисраиисрсаиимрмикассиавщирцщаргисщаргиусщг"
                         + "раицщгмаищгсицкщагцимщгркаисщгрцкигвниысщгцирущгсцщугнищсгуниущгрмицкщгрисщнгкищгцркимуг"
@@ -31,7 +30,6 @@ class FilmControllerTest {
                 .duration(0)
                 .build();
         Film film3 = Film.builder()
-                .id(3)
                 .name("Звёздные войны")
                 .description("Вселенная «Звёздных войн» расширилась с выходом на Disney+ сериала «Книга Бобы Фетта» — "
                         + "спин-оффа суперуспешного «Мандалорца». Но события нового шоу не просто разворачиваются после"
@@ -46,29 +44,25 @@ class FilmControllerTest {
 
     @Test
     void update() throws ValidationException {
-        Film film2 = Film.builder()
-                .id(2)
-                .name("  ")
-                .description("варпиашмпршариироамигимргаргиагригриурсисаруисраиисрсаиимрмикассиавщирцщаргисщаргиусщг"
-                        + "раицщгмаищгсицкщагцимщгркаисщгрцкигвниысщгцирущгсцщугнищсгуниущгрмицкщгрисщнгкищгцркимуг"
-                        + "ицщгкрсищцкгцумиущгимщргрии")
-                .releaseDate(LocalDate.of(1895,12,27))
-                .duration(0)
+        Film film = Film.builder()
+                .name("jj")
+                .description("варпиашгимщргрии")
+                .releaseDate(LocalDate.of(1895,12,29))
+                .duration(1)
                 .build();
+        Film film2 = filmController.create(film);
+        film2.setDuration(0);
         assertThrows(ValidationException.class,() -> filmController.update(film2));
-        film2.setName("Гарри Поттер");
+        film2.setReleaseDate(LocalDate.of(1895,12,27));
+        assertThrows(ValidationException.class,() -> filmController.update(film2));
+        film2.setDescription("Гарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри ПоттерГарри Поттер");
         assertThrows(ValidationException.class,() -> filmController.update(film2));
         film2.setDescription(" ");
         assertThrows(ValidationException.class,() -> filmController.update(film2));
-        film2.setDescription("kjfff");
+        film2.setName("");
         assertThrows(ValidationException.class,() -> filmController.update(film2));
-        film2.setReleaseDate(LocalDate.of(1895,12,29));
-        assertThrows(ValidationException.class,() -> filmController.update(film2));
-        film2.setDuration(23);
-        assertEquals(film2,filmController.update(film2));
         assertThrows(NullPointerException.class,() -> filmController.update(null));
         Film film3 = Film.builder()
-                .id(3)
                 .name("Звёздные войны")
                 .description("Вселенная «Звёздных войн» расширилась с выходом на Disney+ сериала «Книга Бобы Фетта» — "
                         + "спин-оффа суперуспешного «Мандалорца». Но события нового шоу не просто разворачиваются после"
@@ -76,6 +70,8 @@ class FilmControllerTest {
                 .releaseDate(LocalDate.of(1895,12,28))
                 .duration(1)
                 .build();
-        assertEquals(film3,filmController.update(film3));
+        Film film33 = filmController.create(film3);
+        film33.setName("hjhj jhjh jj jj");
+        assertEquals("hjhj jhjh jj jj",filmController.update(film33).getName());
     }
 }

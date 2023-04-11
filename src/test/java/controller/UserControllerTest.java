@@ -22,14 +22,12 @@ class UserControllerTest {
     @Test
     void create() throws ValidationException {
         User user2 = User.builder()
-                .id(1)
                 .email("  ")
                 .login("  ")
                 .name("")
                 .birthday(LocalDate.now().plusMonths(10))
                 .build();
         User user3 = User.builder()
-                .id(2)
                 .email("KirillFireBeavers@gmail.com")
                 .login("9impulse")
                 .name("")
@@ -42,32 +40,31 @@ class UserControllerTest {
 
     @Test
     void update() throws ValidationException {
-        User user2 = User.builder()
-                .id(1)
-                .email("  ")
-                .login("  ")
+        User user = User.builder()
+                .email("KirillFireBeavers@gmail.com")
+                .login("9impulse")
                 .name("")
-                .birthday(LocalDate.now().plusMonths(10))
+                .birthday(LocalDate.now())
                 .build();
-        assertThrows(ValidationException.class,() -> userController.update(user2));
-        user2.setEmail("Skeleton");
-        assertThrows(ValidationException.class,() -> userController.update(user2));
-        user2.setEmail("Skeleton@mail.ru");
+        User user2 = userController.create(user);
+        user2.setBirthday(LocalDate.now().plusMonths(10));
         assertThrows(ValidationException.class,() -> userController.update(user2));
         user2.setLogin("Kos tia noi");
         assertThrows(ValidationException.class,() -> userController.update(user2));
-        user2.setLogin("Kostik");
+        user2.setLogin("");
         assertThrows(ValidationException.class,() -> userController.update(user2));
-        user2.setBirthday(LocalDate.now());
-        assertEquals(user2,userController.update(user2));
+        user2.setEmail("Skeleton");
+        assertThrows(ValidationException.class,() -> userController.update(user2));
+        user2.setEmail("  ");
+        assertThrows(ValidationException.class,() -> userController.update(user2));
         assertThrows(NullPointerException.class,() -> userController.update(null));
         User user3 = User.builder()
-                .id(2)
                 .email("KirillFireBeavers@gmail.com")
                 .login("9impulse")
                 .name("")
                 .birthday(LocalDate.of(1999,10,31))
                 .build();
-        assertEquals(user3,userController.update(user3));
+        User user33 = userController.create(user3);
+        assertEquals("9impulse",userController.update(user33).getLogin());
     }
 }
