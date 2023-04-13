@@ -3,6 +3,7 @@ package org.slava.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
+import org.slava.filmorate.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 public class UserController {
     private final HashMap<Integer,User> users = new HashMap<>();
     private int id = 0;
+    Validator validator = new Validator();
 
     @GetMapping
     public Collection<User> findAll() {
@@ -23,7 +25,7 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
-        checkUser(user);
+        validator.checkUser(user);
         id++;
         user.setId(id);
         if (user.getName() == null || user.getName().isBlank()) {
@@ -36,7 +38,7 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) throws ValidationException {
-        checkUser(user);
+        validator.checkUser(user);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -53,20 +55,5 @@ public class UserController {
         }
         log.info("Пользователь успешно обновлён: " + user);
         return user;
-    }
-
-    private void checkUser(User user) throws ValidationException {
-        if (user.getEmail() == null || user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            log.error("Ошибка валидации: электронная почта пустая или не содержит @");
-            throw new ValidationException();
-        }
-        if (user.getLogin() == null || user.getLogin().contains(" ") || user.getLogin().isBlank()) {
-            log.error("Ошибка валидации: логин пустой или содержит пробелы");
-            throw new ValidationException();
-        }
-        if (user.getBirthday().isAfter(LocalDate.now()) || user.getBirthday() == null) {
-            log.error("Ошибка валидации: дата рождения выставлена в будущем или пустая");
-            throw new ValidationException();
-        }
     }
 }

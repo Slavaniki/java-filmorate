@@ -3,6 +3,7 @@ package org.slava.filmorate.controller;
 import org.slava.filmorate.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.slava.filmorate.model.Film;
+import org.slava.filmorate.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 public class FilmController {
     private final HashMap<Integer, Film> films = new HashMap<>();
     private int id = 0;
+    Validator validator = new Validator();
 
     @GetMapping
     public Collection<Film> findAll() {
@@ -23,7 +25,7 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
-        checkFilm(film);
+        validator.checkFilm(film);
         id++;
         film.setId(id);
         films.put(film.getId(),film);
@@ -33,7 +35,7 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
-        checkFilm(film);
+        validator.checkFilm(film);
         if (films.containsKey(film.getId())) {
             Film tmpFilm = films.get(film.getId());
             tmpFilm.setName(film.getName());
@@ -47,25 +49,5 @@ public class FilmController {
         }
         log.info("Фильм успешно обновлён: " + film);
         return film;
-    }
-
-    private void checkFilm(Film film) throws ValidationException {
-        if (film.getName() == null || film.getName().isBlank()) {
-            log.error("Ошибка валидации: название пустое");
-            throw new ValidationException();
-        }
-        if (film.getDescription() == null || film.getDescription().isBlank() || film.getDescription().length() > 200) {
-            log.error("Ошибка валидации: описание превысило лимит в 200 символов или пустое");
-            throw new ValidationException();
-        }
-        if (film.getReleaseDate() == null
-                || film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
-            log.error("Ошибка валидации: дата релиза ранее 28.12.1895 или пустая");
-            throw new ValidationException();
-        }
-        if (film.getDuration() <= 0) {
-            log.error("Ошибка валидации: длительность фильма равна нулю или отрицательная");
-            throw new ValidationException();
-        }
     }
 }
