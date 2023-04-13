@@ -6,7 +6,6 @@ import org.slava.filmorate.model.User;
 import org.slava.filmorate.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 

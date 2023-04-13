@@ -1,12 +1,11 @@
 package org.slava.filmorate.controller;
 
-import org.slava.filmorate.exceptions.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashMap;
 
