@@ -5,6 +5,8 @@ import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.slava.filmorate.service.FilmService;
+import org.slava.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 
@@ -16,10 +18,14 @@ class FilmControllerTest {
     private Film film;
     private Film film2;
     private Film film3;
+    private FilmService filmService;
+    private InMemoryFilmStorage filmStorage;
 
     @BeforeEach
     void setUp() {
-        filmController = new FilmController();
+        filmStorage = new InMemoryFilmStorage();
+        filmService = new FilmService(filmStorage);
+        filmController = new FilmController(filmService);
         film = Film.builder()
                 .name("jj")
                 .description("варпиашгимщргрии")
