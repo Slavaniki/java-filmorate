@@ -1,6 +1,7 @@
 package org.slava.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
 import org.slava.filmorate.validation.Validator;
@@ -50,7 +51,7 @@ public class InMemoryUserStorage implements UserStorage {
             users.replace(tmpUser.getId(), tmpUser);
             user = tmpUser;
         } else {
-            throw new ValidationException();
+            throw new ResourceNotFoundException("Пользователя с таким id не существует");
         }
         log.info("Пользователь успешно обновлён: " + user);
         return user;
@@ -58,6 +59,11 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User findUserById(Integer id) {
-        return users.get(id);
+        User user = users.get(id);
+        if (user == null) {
+            throw new ResourceNotFoundException("Пользователя с таким id не существует");
+        } else {
+            return user;
+        }
     }
 }

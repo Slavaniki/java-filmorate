@@ -11,4 +11,6 @@ public interface FilmStorage {
     public Film update(Film film) throws ValidationException;
 
     public Collection<Film> findAll();
+
+    public Film findById(Integer id);
 }

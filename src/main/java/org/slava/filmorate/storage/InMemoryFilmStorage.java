@@ -1,6 +1,7 @@
 package org.slava.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.validation.Validator;
@@ -20,6 +21,15 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Collection<Film> findAll() {
         return films.values();
+    }
+
+    @Override
+    public Film findById(Integer id) {
+        if (films.containsKey(id)) {
+            return films.get(id);
+        } else {
+            throw new ResourceNotFoundException("Фильма с таким id не существует");
+        }
     }
 
     @Override
@@ -44,7 +54,7 @@ public class InMemoryFilmStorage implements FilmStorage {
             films.replace(tmpFilm.getId(),tmpFilm);
             film = tmpFilm;
         } else {
-            throw new ValidationException();
+            throw new ResourceNotFoundException("Фильма с таким id не существует");
         }
         log.info("Фильм успешно обновлён: " + film);
         return film;

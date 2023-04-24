@@ -17,28 +17,41 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public void addFriend(User user, User friend) throws ValidationException {
-        user.setFriend(friend.getId());
-        friend.setFriend(user.getId());
+    public void addFriend(Integer id, Integer friendId) throws ValidationException {
+        User user = userStorage.findUserById(id);
+        User friend = userStorage.findUserById(friendId);
+        if (user != null && friend != null) {
+        user.addFriend(friendId);
+        friend.addFriend(id);
         userStorage.update(user);
         userStorage.update(friend);
+        }
     }
 
-    public void deleteFriend(User user, User friend) throws ValidationException {
+    public void deleteFriend(Integer id, Integer friendId) throws ValidationException {
+        User user = userStorage.findUserById(id);
+        User friend = userStorage.findUserById(friendId);
         user.deleteFriend(friend.getId());
         friend.deleteFriend(user.getId());
         userStorage.update(user);
         userStorage.update(friend);
     }
 
-    public List<User> getAllFriends(User user) {
+    public List<User> getAllFriends(Integer userId) {
+        User user = userStorage.findUserById(userId);
         List<User> users = new ArrayList<>();
+        if (user.getFriends() != null) {
         user.getFriends().forEach(id -> users.add(userStorage.findUserById(id)));
+        }
         return users;
     }
 
     public Collection<User> findAll() {
         return userStorage.findAll();
+    }
+
+    public User findById(Integer id) {
+        return userStorage.findUserById(id);
     }
 
     public User create(User user) throws ValidationException {
@@ -47,5 +60,25 @@ public class UserService {
 
     public User update(User user) throws ValidationException {
         return userStorage.update(user);
+    }
+
+    public List<User> findAllCommonFriends(Integer userId, Integer otherId) {
+        List<User> commonFriends = new ArrayList<>();
+        User user = userStorage.findUserById(userId);
+        List<User> users = new ArrayList<>();
+        if (user.getFriends() != null) {
+        user.getFriends().forEach(id -> users.add(userStorage.findUserById(id)));
+        }
+        User user2 = userStorage.findUserById(otherId);
+        List<User> users2 = new ArrayList<>();
+        if (user2.getFriends() != null) {
+        user2.getFriends().forEach(id -> users2.add(userStorage.findUserById(id)));
+        }
+        for (User usr: users) {
+            if (users2.contains(usr)) {
+                commonFriends.add(usr);
+            }
+        }
+        return commonFriends;
     }
 }
