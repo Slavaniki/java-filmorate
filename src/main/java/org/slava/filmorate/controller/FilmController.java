@@ -12,6 +12,7 @@ import java.util.List;
 @RequestMapping("/films")
 public class FilmController {
     private final FilmService filmService;
+    private final Integer defaultCountOfMostLikedFilms = 10;
 
     public FilmController(FilmService filmService) {
         this.filmService = filmService;
@@ -32,7 +33,7 @@ public class FilmController {
     @GetMapping
     public List<Film> findMostPopularFilms(@RequestParam(required = false) Integer count) {
         if (count == null) {
-            return filmService.getMostLikedFilms(10);
+            return filmService.getMostLikedFilms(defaultCountOfMostLikedFilms);
         } else {
             return filmService.getMostLikedFilms(count);
         }
