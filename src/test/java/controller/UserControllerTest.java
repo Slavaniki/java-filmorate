@@ -1,10 +1,12 @@
 package controller;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slava.filmorate.controller.UserController;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.slava.filmorate.service.UserService;
+import org.slava.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -16,10 +18,14 @@ class UserControllerTest {
     private User user;
     private User user2;
     private User user3;
+    private UserService userService;
+    private InMemoryUserStorage userStorage;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController();
+        userStorage = new InMemoryUserStorage();
+        userService = new UserService(userStorage);
+        userController = new UserController(userService);
         user = User.builder()
                 .email("KirillFireBeavers@gmail.com")
                 .login("9impulse")
