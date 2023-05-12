@@ -1,7 +1,7 @@
 # java-filmorate
-LINK: 
+LINK:
 https://app.quickdatabasediagrams.com/#/d/PbpCrx
-![img.png](img.png)
+![img_1.png](img_1.png)
 Examples of requests:
 POST {{baseUrl}}/films
 body: {
