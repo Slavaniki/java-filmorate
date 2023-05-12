@@ -1,5 +1,6 @@
 # java-filmorate
-Template repository for Filmorate project.
+LINK: 
+https://app.quickdatabasediagrams.com/#/d/PbpCrx
 ![img.png](img.png)
 Examples of requests:
 POST {{baseUrl}}/films
