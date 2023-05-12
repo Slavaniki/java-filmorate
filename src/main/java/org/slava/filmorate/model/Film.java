@@ -6,6 +6,7 @@ import org.slava.filmorate.exceptions.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,6 +18,8 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Integer> likes;
+    private List<Genre> genres;
+    private Rating rating;
 
     public void setLike(Integer id) {
         if (likes == null) {
