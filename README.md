@@ -1,29 +1,16 @@
 # java-filmorate
 LINK:
 https://app.quickdatabasediagrams.com/#/d/PbpCrx
-![img_1.png](img_1.png)
+![img_2.png](img_2.png)
 Examples of requests:
-POST {{baseUrl}}/films
-body: {
-"name": "New film",
-"releaseDate": "1999-04-30",
-"description": "New film about friends",
-"duration": 120,
-"rate": 4
-}
+```
+SELECT * FROM user WHERE user_ID=1;
 
-GET {{baseUrl}}/films
+SELECT * FROM user
 
-PUT {{baseUrl}}/films
-body: {
-"id": 1,
-"name": "Film Updated",
-"releaseDate": "1989-04-17",
-"description": "New film update decription",
-"duration": 190,
-"rate": 4
-}
+SELECT * FROM film WHERE film_ID=film_ID
 
-GET {{baseUrl}}/users/:id/friends/common/:otherId
-
-PUT {{baseUrl}}/films/:id/like/:userId
+SELECT * FROM user AS u WHERE user_ID in (
+ SELECT friend_ID FROM friends AS f WHERE u.user_ID=f.user_ID
+)
+```
