@@ -3,6 +3,8 @@ package org.slava.filmorate.service;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.storage.FilmStorage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +14,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
+
+    @Autowired
+    @Qualifier("filmDbStorage")
     private final FilmStorage filmStorage;
 
     public FilmService(FilmStorage filmStorage) {
