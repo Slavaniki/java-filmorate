@@ -1,0 +1,9 @@
+MERGE INTO PUBLIC.RATING
+  (RATING_ID, NAME)
+  KEY(RATING_ID)
+VALUES
+	 (1,'G'),
+	 (2,'PG'),
+	 (3,'R'),
+	 (4,'PG_13'),
+	 (5,'NC_17');

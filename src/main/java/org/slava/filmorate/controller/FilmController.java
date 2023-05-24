@@ -1,5 +1,6 @@
 package org.slava.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.service.FilmService;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/films")
+@Slf4j
 public class FilmController {
     private final FilmService filmService;
     private final Integer defaultCountOfMostLikedFilms = 10;

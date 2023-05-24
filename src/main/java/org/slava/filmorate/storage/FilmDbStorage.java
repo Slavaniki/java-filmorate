@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Component
 @Slf4j
@@ -29,7 +28,15 @@ public class FilmDbStorage implements FilmStorage {
     }
     @Override
     public Film create(Film film) throws ValidationException {
-        return null;
+        String sqlQuery = "insert into film(NAME, DESCRIPTION, RELEASE_DATE, DURATION, RATING_ID) " +
+                "values (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sqlQuery,
+                film.getName(),
+                film.getDescription(),
+                film.getReleaseDate(),
+                film.getDuration(),
+                film.getMpa().getId());
+        return film;
     }
 
     @Override
@@ -51,7 +58,9 @@ public class FilmDbStorage implements FilmStorage {
         String desc = null;
         LocalDate rd = null;
         int dur = 0;
-        Set<Integer> likes = null;
+/*        Set<Integer> likes = rs.("likes");
+        String sql = "select * from film";
+        Collection<String> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));*/
         List<Genre> genres = null;
         Rating rate = null;
 

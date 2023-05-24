@@ -19,7 +19,7 @@ public class Film {
     private int duration;
     private Set<Integer> likes;
     private List<Genre> genres;
-    private Rating rating;
+    private Rating mpa;
 
     public void setLike(Integer id) {
         if (likes == null) {
