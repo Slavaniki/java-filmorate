@@ -14,8 +14,8 @@ public class User {
     private String login;
     private String name;
     private LocalDate birthday;
-    private Set<Integer> friends;
-    private Status friendStatus;
+    private Set<Integer> friends = new HashSet<Integer>();
+    //private FriendStatus friendStatus;
 
     public void addFriend(Integer id) {
         if (friends == null) {

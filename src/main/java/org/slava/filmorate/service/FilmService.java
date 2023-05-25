@@ -1,5 +1,6 @@
 package org.slava.filmorate.service;
 
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.storage.FilmStorage;
@@ -31,6 +32,9 @@ public class FilmService {
 
     public void deleteLike(Integer id, Integer userId) throws ValidationException {
         Film film = filmStorage.findById(id);
+        if (userId < 0) {
+            throw new ResourceNotFoundException("user not found");
+        }
         if (film != null) {
             film.deleteLike(userId);
             filmStorage.update(film);

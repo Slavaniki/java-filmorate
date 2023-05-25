@@ -5,6 +5,7 @@ import lombok.Data;
 import org.slava.filmorate.exceptions.ResourceNotFoundException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,9 +18,9 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private int duration;
-    private Set<Integer> likes;
-    private List<Genre> genres;
-    private Rating mpa;
+    private Set<Integer> likes = new HashSet<Integer>();
+    private List<Genres> genres = new ArrayList<>();
+    private MPA mpa;
 
     public void setLike(Integer id) {
         if (likes == null) {
@@ -32,7 +33,7 @@ public class Film {
         if (likes.contains(id)) {
             likes.remove(id);
         } else {
-            throw new ResourceNotFoundException("Пользователя с таким id нет в лайках");
+            // throw new ResourceNotFoundException("Пользователя с таким id нет в лайках");
         }
     }
 }

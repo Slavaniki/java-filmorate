@@ -1,9 +1,11 @@
 package org.slava.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
 import org.slava.filmorate.service.UserService;
+import org.slava.filmorate.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -14,6 +16,7 @@ import java.util.List;
 @Slf4j
 public class UserController {
     private final UserService userService;
+    private Validator validator = new Validator();
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -43,12 +46,14 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) throws ValidationException {
+    public User create(@RequestBody User user) throws ValidationException, ResourceNotFoundException {
+        validator.checkUser(user);
         return userService.create(user);
     }
 
     @PutMapping
-    public User update(@RequestBody User user) throws ValidationException {
+    public User update(@RequestBody User user) throws ValidationException, ResourceNotFoundException {
+        validator.checkUser(user);
         return userService.update(user);
     }
 

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.service.FilmService;
+import org.slava.filmorate.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -14,6 +15,7 @@ import java.util.List;
 @Slf4j
 public class FilmController {
     private final FilmService filmService;
+    private Validator validator = new Validator();
     private final Integer defaultCountOfMostLikedFilms = 10;
 
     public FilmController(FilmService filmService) {
@@ -43,11 +45,13 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
+        validator.checkFilm(film);
         return filmService.create(film);
     }
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
+        validator.checkFilm(film);
         return filmService.update(film);
     }
 
