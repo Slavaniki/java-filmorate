@@ -41,9 +41,9 @@ public class GenreController {
     @RequestMapping("/{id}")
     @GetMapping
     public Genres findById(@PathVariable Integer id) {
-        String sql = "select * from GENRE where GENRE_ID="+id;
+        String sql = "select * from GENRE where GENRE_ID=" + id;
         List<Genres> genres = jdbcTemplate.query(sql, (rs, rowNum) -> makeGenres(rs));
-        if (genres.size()>0) {
+        if (genres.size() > 0) {
             return genres.get(0);
         } else {
             throw new NoSuchElementException("genres not found");
