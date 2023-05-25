@@ -2,7 +2,6 @@ package org.slava.filmorate.model;
 
 import lombok.Builder;
 import lombok.Data;
-import org.slava.filmorate.exceptions.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
