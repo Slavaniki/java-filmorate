@@ -40,11 +40,11 @@ public class FilmDbStorage implements FilmStorage {
                 film.getDuration(),
                 film.getMpa().getId());
 
-        String sqlFilm = "select * from film where NAME='"+film.getName()+"'";
+        String sqlFilm = "select * from film where NAME='" + film.getName() + "'";
         int id = jdbcTemplate.queryForObject(sqlFilm, (rs, rowNum) -> rs.getInt("FILM_ID"));
         film.setId(id);
 
-        if (film.getGenres()!=null) {
+        if (film.getGenres() != null) {
             film.getGenres()
                     .stream().distinct()
                     .forEach(genre -> {
@@ -57,7 +57,7 @@ public class FilmDbStorage implements FilmStorage {
                     });
         }
 
-        if (film.getLikes()!= null) {
+        if (film.getLikes() != null) {
             film.getLikes().stream().forEach(like -> {
                 String sqlQueryGenre = "insert into LIKES(FILM_ID, USER_ID) " +
                         "values (?, ?)";
@@ -72,14 +72,14 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film update(Film film) throws ValidationException {
-        String sql = "select * from film where FILM_ID="+film.getId();
+        String sql = "select * from film where FILM_ID=" + film.getId();
         List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
-        if (films.size()==0) {
+        if (films.size() == 0) {
             throw new ResourceNotFoundException("Фильма с таким id не существует");
         }
-        String sqlQuery = "update film SET NAME='"+film.getName()+"', DESCRIPTION='"+film.getDescription()
-                +"', RELEASE_DATE='"+film.getReleaseDate()+"', DURATION="+film.getDuration()+", RATING_ID="
-                +film.getMpa().getId() +" where FILM_ID="+film.getId();
+        String sqlQuery = "update film SET NAME='" + film.getName() + "', DESCRIPTION='" + film.getDescription()
+                + "', RELEASE_DATE='" + film.getReleaseDate() + "', DURATION=" + film.getDuration()+", RATING_ID="
+                + film.getMpa().getId() + " where FILM_ID=" + film.getId();
         jdbcTemplate.update(sqlQuery);
 
         String sqlDel = "delete from FILM_GENRE where FILM_ID=" + film.getId();
@@ -133,7 +133,7 @@ public class FilmDbStorage implements FilmStorage {
         Collection<Integer> likess = jdbcTemplate.query(sqlLikes, (rs2, rowNum) -> makeLikes(rs2));
         Set<Integer> likes = likess.stream().collect(Collectors.toSet());
 
-        String sqlGenres = "select * from FILM_GENRE where FILM_ID="+id;
+        String sqlGenres = "select * from FILM_GENRE where FILM_ID=" + id;
         List<Genres> genres = jdbcTemplate.query(sqlGenres, (rs3, rowNum) -> makeGenres(rs3));
 
         Film film = Film.builder()
@@ -145,13 +145,13 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     private MPA makeMPA(int ratingId) throws SQLException {
-        String sqlRating = "select * from RATING where RATING_ID="+ratingId;
+        String sqlRating = "select * from RATING where RATING_ID=" + ratingId;
         String name = jdbcTemplate.queryForObject(sqlRating, (rs, rowNum) -> rs.getString("NAME"));
         return MPA.builder().id(ratingId).name(name).build();
     }
     private Genres makeGenres(ResultSet rs) throws SQLException {
         int id = rs.getInt("GENRE_ID");
-        String sqlGenre = "select * from GENRE where GENRE_ID="+id;
+        String sqlGenre = "select * from GENRE where GENRE_ID=" + id;
         String name = jdbcTemplate.queryForObject(sqlGenre, (rs2, rowNum) -> rs2.getString("NAME"));
         return Genres.builder().id(id).name(name).build();
     }
@@ -163,9 +163,9 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film findById(Integer id) {
-        String sqlFilm = "select * from film where FILM_ID="+id;
+        String sqlFilm = "select * from film where FILM_ID=" + id;
         List<Film> films = jdbcTemplate.query(sqlFilm, (rs, rowNum) -> makeFilm(rs));
-        if (films.size()>0) {
+        if (films.size() > 0) {
             return films.get(0);
         } else {
             throw new ResourceNotFoundException("Фильма с таким id не существует");

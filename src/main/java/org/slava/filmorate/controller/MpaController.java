@@ -40,9 +40,9 @@ public class MpaController {
     @RequestMapping("/{id}")
     @GetMapping
     public MPA findById(@PathVariable Integer id) {
-        String sql = "select * from RATING where RATING_ID="+id;
+        String sql = "select * from RATING where RATING_ID=" + id;
         List<MPA> mpas = jdbcTemplate.query(sql, (rs, rowNum) -> makeGenres(rs));
-        if (mpas.size()>0) {
+        if (mpas.size() > 0) {
             return mpas.get(0);
         } else {
             throw new NoSuchElementException("mpa not found");

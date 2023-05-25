@@ -74,11 +74,11 @@ public class UserDbStorage implements UserStorage {
                 user.getName(),
                 user.getBirthday()
                 );
-        String sql = "select * from users where NAME='"+user.getName()+"' AND LOGIN='"+user.getLogin()+"' AND EMAIL='"+user.getEmail()+"'";
+        String sql = "select * from users where NAME='" + user.getName()+"' AND LOGIN='" + user.getLogin() + "' AND EMAIL='" + user.getEmail() + "'";
         int id = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> rs.getInt("USER_ID"));
         user.setId(id);
 
-        if (user.getFriends()!=null) {
+        if (user.getFriends() != null) {
             user.getFriends()
                     .stream()
                     .forEach(fr -> {
@@ -100,13 +100,13 @@ public class UserDbStorage implements UserStorage {
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
-        String sqlQuery = "update users SET EMAIL='"+ user.getEmail()+"', LOGIN='"+user.getLogin()+"', NAME='"+user.getName()+"', BIRTHDAY='"+user.getBirthday()+"' where USER_ID="+user.getId();
+        String sqlQuery = "update users SET EMAIL='" + user.getEmail() + "', LOGIN='" + user.getLogin() + "', NAME='" + user.getName() + "', BIRTHDAY='" + user.getBirthday() + "' where USER_ID=" + user.getId();
         jdbcTemplate.update(sqlQuery);
 
         String sqlDel = "delete from FRIENDS where USER_ID=" + user.getId();
         jdbcTemplate.execute(sqlDel);
 
-        if (user.getFriends()!=null) {
+        if (user.getFriends() != null) {
             user.getFriends()
                     .stream()
                     .forEach(fr -> {
@@ -125,9 +125,9 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User findUserById(Integer id) {
-        String sql = "select * from users where USER_ID="+id;
+        String sql = "select * from users where USER_ID=" + id;
         List<User> users = jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs));
-        if (users.size()==0) {
+        if (users.size() == 0) {
             throw new ResourceNotFoundException("Пользователя с таким id не существует");
         } else {
             return users.get(0);
