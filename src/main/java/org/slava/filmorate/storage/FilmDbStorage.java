@@ -23,12 +23,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @Primary
 @Qualifier("filmDbStorage")
-public class FilmDbStorage implements FilmStorage {  
+public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
 
     public FilmDbStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
     @Override
     public Film create(Film film) throws ValidationException {
         String sqlQuery = "insert into film(NAME, DESCRIPTION, RELEASE_DATE, DURATION, RATING_ID) " +
@@ -78,14 +79,14 @@ public class FilmDbStorage implements FilmStorage {
             throw new ResourceNotFoundException("Фильма с таким id не существует");
         }
         String sqlQuery = "update film SET NAME='" + film.getName() + "', DESCRIPTION='" + film.getDescription()
-                + "', RELEASE_DATE='" + film.getReleaseDate() + "', DURATION=" + film.getDuration()+", RATING_ID="
+                + "', RELEASE_DATE='" + film.getReleaseDate() + "', DURATION=" + film.getDuration() + ", RATING_ID="
                 + film.getMpa().getId() + " where FILM_ID=" + film.getId();
         jdbcTemplate.update(sqlQuery);
 
         String sqlDel = "delete from FILM_GENRE where FILM_ID=" + film.getId();
         jdbcTemplate.execute(sqlDel);
 
-        if (film.getGenres()!=null) {
+        if (film.getGenres() != null) {
             film.getGenres()
                     .stream().distinct()
                     .forEach(genre -> {
@@ -101,7 +102,7 @@ public class FilmDbStorage implements FilmStorage {
         String sqlDel2 = "delete from LIKES where FILM_ID=" + film.getId();
         jdbcTemplate.execute(sqlDel2);
 
-        if (film.getLikes()!= null) {
+        if (film.getLikes() != null) {
             film.getLikes().stream().forEach(like -> {
                 String sqlQueryGenre = "insert into LIKES(FILM_ID, USER_ID) " +
                         "values (?, ?)";
@@ -149,6 +150,7 @@ public class FilmDbStorage implements FilmStorage {
         String name = jdbcTemplate.queryForObject(sqlRating, (rs, rowNum) -> rs.getString("NAME"));
         return MPA.builder().id(ratingId).name(name).build();
     }
+
     private Genres makeGenres(ResultSet rs) throws SQLException {
         int id = rs.getInt("GENRE_ID");
         String sqlGenre = "select * from GENRE where GENRE_ID=" + id;
