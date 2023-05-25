@@ -74,7 +74,8 @@ public class UserDbStorage implements UserStorage {
                 user.getName(),
                 user.getBirthday()
                 );
-        String sql = "select * from users where NAME='" + user.getName()+"' AND LOGIN='" + user.getLogin() + "' AND EMAIL='" + user.getEmail() + "'";
+        String sql = "select * from users where NAME='" + user.getName() + "' AND LOGIN='" + user.getLogin()
+                + "' AND EMAIL='" + user.getEmail() + "'";
         int id = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> rs.getInt("USER_ID"));
         user.setId(id);
 
