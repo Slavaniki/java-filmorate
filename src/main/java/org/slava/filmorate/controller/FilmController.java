@@ -53,7 +53,7 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
-        if (!filmService.checkFilmExist(film.getId())){
+        if (!filmService.checkFilmExist(film.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
         validator.checkFilm(film);
