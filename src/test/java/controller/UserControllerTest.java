@@ -54,7 +54,7 @@ class UserControllerTest {
     }
 
     @Test
-    void update() throws ValidationException {
+    void update() throws Exception {
         User user2 = userController.create(user);
         user2.setBirthday(LocalDate.now().plusMonths(10));
         assertThrows(ValidationException.class,() -> userController.update(user2));

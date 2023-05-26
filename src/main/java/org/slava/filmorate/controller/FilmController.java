@@ -5,7 +5,9 @@ import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.service.FilmService;
 import org.slava.filmorate.validation.Validator;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
@@ -51,6 +53,9 @@ public class FilmController {
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
+        if (!filmService.checkFilmExist(film.getId())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        }
         validator.checkFilm(film);
         return filmService.update(film);
     }

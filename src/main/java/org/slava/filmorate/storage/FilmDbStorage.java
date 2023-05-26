@@ -173,4 +173,13 @@ public class FilmDbStorage implements FilmStorage {
             throw new ResourceNotFoundException("Фильма с таким id не существует");
         }
     }
+
+    public boolean checkFilmExist(Integer id) {
+        String sql = "select * from film where FILM_ID=" + id;
+        List<Film> films = jdbcTemplate.query(sql, (rs, rowNum) -> makeFilm(rs));
+        if (films.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

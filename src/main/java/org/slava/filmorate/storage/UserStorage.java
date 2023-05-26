@@ -13,4 +13,6 @@ public interface UserStorage {
     public User update(User user) throws ValidationException;
 
     public User findUserById(Integer id);
+
+    boolean checkUserExist(Integer id) throws Exception;
 }

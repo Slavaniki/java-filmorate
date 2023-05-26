@@ -1,6 +1,7 @@
 package org.slava.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.model.Genres;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +47,7 @@ public class GenreController {
         if (genres.size() > 0) {
             return genres.get(0);
         } else {
-            throw new NoSuchElementException("genres not found");
+            throw new ResourceNotFoundException("genres not found");
         }
     }
 }

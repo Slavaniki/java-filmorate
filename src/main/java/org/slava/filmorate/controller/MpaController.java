@@ -1,6 +1,7 @@
 package org.slava.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.model.MPA;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class MpaController {
         if (mpas.size() > 0) {
             return mpas.get(0);
         } else {
-            throw new NoSuchElementException("mpa not found");
+            throw new ResourceNotFoundException("mpa not found");
         }
     }
 }

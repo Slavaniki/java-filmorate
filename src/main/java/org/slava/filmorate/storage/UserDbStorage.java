@@ -134,4 +134,13 @@ public class UserDbStorage implements UserStorage {
             return users.get(0);
         }
     }
+
+    public boolean checkUserExist(Integer id) {
+        String sql = "select * from users where USER_ID=" + id;
+        List<User> users = jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs));
+        if (users.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

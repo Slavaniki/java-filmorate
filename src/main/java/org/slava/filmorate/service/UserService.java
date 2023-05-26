@@ -86,4 +86,8 @@ public class UserService {
         }
         return commonFriends;
     }
+
+    public boolean checkUserExist(Integer id) throws Exception {
+        return userStorage.checkUserExist(id);
+    }
 }

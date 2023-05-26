@@ -74,4 +74,8 @@ public class FilmService {
         }
         return Integer.compare(film2.getLikes().size(), film1.getLikes().size());
     }
+
+    public boolean checkFilmExist(Integer id) {
+        return filmStorage.checkFilmExist(id);
+    }
 }

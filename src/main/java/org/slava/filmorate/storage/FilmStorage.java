@@ -13,4 +13,6 @@ public interface FilmStorage {
     public Collection<Film> findAll();
 
     public Film findById(Integer id);
+
+    boolean checkFilmExist(Integer id);
 }
