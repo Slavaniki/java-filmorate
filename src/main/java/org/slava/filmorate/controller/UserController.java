@@ -1,7 +1,6 @@
 package org.slava.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
@@ -56,7 +55,7 @@ public class UserController {
 
     @PutMapping
     public User update(@RequestBody User user) throws Exception {
-        if (!userService.checkUserExist(user.getId())){
+        if (!userService.checkUserExist(user.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
         }
         validator.checkUser(user);
