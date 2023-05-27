@@ -31,8 +31,6 @@ public class Film {
     public void deleteLike(Integer id) {
         if (likes.contains(id)) {
             likes.remove(id);
-        } else {
-            // throw new ResourceNotFoundException("Пользователя с таким id нет в лайках");
         }
     }
 }

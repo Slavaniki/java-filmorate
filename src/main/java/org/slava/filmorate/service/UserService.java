@@ -27,9 +27,7 @@ public class UserService {
         User friend = userStorage.findUserById(friendId);
         if (user != null && friend != null) {
             user.addFriend(friendId);
-            //friend.addFriend(id);
             userStorage.update(user);
-            //userStorage.update(friend);
         }
     }
 
@@ -37,9 +35,7 @@ public class UserService {
         User user = userStorage.findUserById(id);
         User friend = userStorage.findUserById(friendId);
         user.deleteFriend(friendId);
-        //friend.deleteFriend(id);
         userStorage.update(user);
-        //userStorage.update(friend);
     }
 
     public List<User> getAllFriends(Integer userId) {
