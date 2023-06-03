@@ -1,8 +1,11 @@
 package org.slava.filmorate.service;
 
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.storage.FilmStorage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,6 +15,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
+
+    @Autowired
+    @Qualifier("filmDbStorage")
     private final FilmStorage filmStorage;
 
     public FilmService(FilmStorage filmStorage) {
@@ -26,6 +32,9 @@ public class FilmService {
 
     public void deleteLike(Integer id, Integer userId) throws ValidationException {
         Film film = filmStorage.findById(id);
+        if (userId < 0) {
+            throw new ResourceNotFoundException("user not found");
+        }
         if (film != null) {
             film.deleteLike(userId);
             filmStorage.update(film);
@@ -64,5 +73,9 @@ public class FilmService {
             film2.setLikes(new HashSet<>());
         }
         return Integer.compare(film2.getLikes().size(), film1.getLikes().size());
+    }
+
+    public boolean checkFilmExist(Integer id) {
+        return filmStorage.checkFilmExist(id);
     }
 }

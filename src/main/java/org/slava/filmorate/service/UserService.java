@@ -1,8 +1,11 @@
 package org.slava.filmorate.service;
 
+import org.slava.filmorate.exceptions.ResourceNotFoundException;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.User;
 import org.slava.filmorate.storage.UserStorage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,6 +14,8 @@ import java.util.List;
 
 @Service
 public class UserService {
+    @Autowired
+    @Qualifier("userDbStorage")
     private final UserStorage userStorage;
 
     public UserService(UserStorage userStorage) {
@@ -22,9 +27,7 @@ public class UserService {
         User friend = userStorage.findUserById(friendId);
         if (user != null && friend != null) {
             user.addFriend(friendId);
-            friend.addFriend(id);
             userStorage.update(user);
-            userStorage.update(friend);
         }
     }
 
@@ -32,9 +35,7 @@ public class UserService {
         User user = userStorage.findUserById(id);
         User friend = userStorage.findUserById(friendId);
         user.deleteFriend(friendId);
-        friend.deleteFriend(id);
         userStorage.update(user);
-        userStorage.update(friend);
     }
 
     public List<User> getAllFriends(Integer userId) {
@@ -58,7 +59,7 @@ public class UserService {
         return userStorage.create(user);
     }
 
-    public User update(User user) throws ValidationException {
+    public User update(User user) throws ValidationException, ResourceNotFoundException {
         return userStorage.update(user);
     }
 
@@ -80,5 +81,9 @@ public class UserService {
             }
         }
         return commonFriends;
+    }
+
+    public boolean checkUserExist(Integer id) throws Exception {
+        return userStorage.checkUserExist(id);
     }
 }

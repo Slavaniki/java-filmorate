@@ -1,17 +1,23 @@
 package org.slava.filmorate.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slava.filmorate.exceptions.ValidationException;
 import org.slava.filmorate.model.Film;
 import org.slava.filmorate.service.FilmService;
+import org.slava.filmorate.validation.Validator;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 import java.util.List;
 
 @RestController
 @RequestMapping("/films")
+@Slf4j
 public class FilmController {
     private final FilmService filmService;
+    private Validator validator = new Validator();
     private final Integer defaultCountOfMostLikedFilms = 10;
 
     public FilmController(FilmService filmService) {
@@ -41,11 +47,16 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
+        validator.checkFilm(film);
         return filmService.create(film);
     }
 
     @PutMapping
     public Film update(@RequestBody Film film) throws ValidationException {
+        if (!filmService.checkFilmExist(film.getId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "entity not found");
+        }
+        validator.checkFilm(film);
         return filmService.update(film);
     }
 

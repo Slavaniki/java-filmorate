@@ -33,6 +33,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
+    public boolean checkFilmExist(Integer id) {
+        return true;
+    }
+
+    @Override
     public Film create(Film film) throws ValidationException {
         validator.checkFilm(film);
         id++;

@@ -66,4 +66,9 @@ public class InMemoryUserStorage implements UserStorage {
             return user;
         }
     }
+
+    @Override
+    public boolean checkUserExist(Integer id) {
+        return true;
+    }
 }

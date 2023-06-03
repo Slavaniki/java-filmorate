@@ -1,7 +1,7 @@
 # java-filmorate
 LINK:
 https://app.quickdatabasediagrams.com/#/d/PbpCrx
-![img_2.png](img_2.png)
+![img_3.png](img_3.png)
 Examples of requests:
 ```
 SELECT * FROM user WHERE user_ID=1;
